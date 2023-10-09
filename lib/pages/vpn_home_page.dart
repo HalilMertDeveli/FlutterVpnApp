@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vpn_app_upwork/pages/vpn_choose_location_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,14 +34,14 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         actions: [
           IconButton(
+            iconSize: 40,
             icon: Icon(
               Icons.network_cell,
               color: Colors.blueGrey,
             ),
-            onPressed: () => print(
-              "you have pressed the network button",
-            ),
-            iconSize: 40,
+            onPressed: () {
+              Navigator.push(context,MaterialPageRoute(builder: (context) => VpnChooseLocationPage(),));
+            },
           ),
           IconButton(
             icon: Icon(
