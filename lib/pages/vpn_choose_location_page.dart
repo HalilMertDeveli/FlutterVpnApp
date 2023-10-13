@@ -1,22 +1,58 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class VpnChooseLocationPage extends StatelessWidget {
-  VpnChooseLocationPage({super.key});
-  final temproryLocaitonList = [
-    TemproryLocation(
-      locationName: "Turkey",
-      locationIcon: Icon(Icons.turn_left),
-    ),
-    TemproryLocation(
-      locationName: "US",
-      locationIcon: Icon(Icons.access_alarm_outlined),
-    ),
+  final instanceOfChooseLocationRow = ChooseLocationRow();
+  static final connectionStatusImagePathList = <String>[
+    "assets/connection/connection_",
+    "assets/connection/connection_",
+    "assets/connection/connection_",
+    "assets/connection/connection_",
+    "assets/connection/connection_",
+    "assets/connection/connection_",
+    "assets/connection/connection_",
+  ];
+  final countryList = <Country>[
+    Country(
+        imagePath: 'assets/flags/Amarica.png',
+        countryName: 'Amarica',
+        connectionStatusPath: connectionStatusImagePathList,
+        connectionCirclePath: "assets/connection/connection_circle.png"),
+    Country(
+        imagePath: 'assets/flags/canada.png',
+        countryName: 'Canada',
+        connectionStatusPath: connectionStatusImagePathList,
+        connectionCirclePath: "assets/connection/connection_circle.png"),
+    Country(
+        imagePath: 'assets/flags/england.png',
+        countryName: 'England',
+        connectionStatusPath: connectionStatusImagePathList,
+        connectionCirclePath: "assets/connection/connection_circle.png"),
+    Country(
+        imagePath: 'assets/flags/germany.png',
+        countryName: 'Germany',
+        connectionStatusPath: connectionStatusImagePathList,
+        connectionCirclePath: "assets/connection/connection_circle.png"),
+    Country(
+        imagePath: 'assets/flags/italy.png',
+        countryName: 'Italy',
+        connectionStatusPath: connectionStatusImagePathList,
+        connectionCirclePath: "assets/connection/connection_circle.png"),
+    Country(
+        imagePath: 'assets/flags/japon.png',
+        countryName: 'Japon',
+        connectionStatusPath: connectionStatusImagePathList,
+        connectionCirclePath: "assets/connection/connection_circle.png"),
+    Country(
+        imagePath: 'assets/flags/turk.png',
+        countryName: 'Turkey',
+        connectionStatusPath: connectionStatusImagePathList,
+        connectionCirclePath: "assets/connection/connection_circle.png"),
   ];
 
   @override
   Widget build(BuildContext context) {
-    ListViewBuilderRow listViewBuilderRowInstance = new ListViewBuilderRow();
-
     return DefaultTabController(
       initialIndex: 1,
       length: 2,
@@ -39,15 +75,10 @@ class VpnChooseLocationPage extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ListView.builder(
-                itemCount: temproryLocaitonList.length,
+                itemCount: countryList.length,
                 itemBuilder: (context, index) {
-                  return listViewBuilderRowInstance.ListViewBuilderRow(
-                      temproryLocaitonList, index);
-
-                  // ListTile(
-                  //   leading: temproryLocaitonList[index].locationIcon,
-                  //   title: Text(temproryLocaitonList[index].locationName.toUpperCase()),
-                  // );
+                  return instanceOfChooseLocationRow
+                      .generateChooseLocationRow(countryList[index].imagePath,countryList[index].countryName,connectionStatusImagePathList);
                 },
               ),
             ),
@@ -61,32 +92,63 @@ class VpnChooseLocationPage extends StatelessWidget {
   }
 }
 
-class TemproryLocation {
-  final String locationName;
-  final Icon locationIcon;
+class Country {
+  final String imagePath;
+  final String countryName;
+  final List<String> connectionStatusPath;
+  final String connectionCirclePath;
 
-  TemproryLocation({required this.locationName, required this.locationIcon});
+  Country({
+    required this.imagePath,
+    required this.countryName,
+    required this.connectionStatusPath,
+    required this.connectionCirclePath,
+  });
 }
 
-class ListViewBuilderRow extends IListViewBuilderRow {}
+class ChooseLocationRow {
+  Widget generateChooseLocationRow(String imagePath,String countryName,List<String> statusPathList) {
+    List<int> randomElementList = randomNumberAndList();
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 30,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                imagePath,
+                height: 50,
+                width: 50,
+              ),
+            ),
+            SizedBox(width: 20,),
+            Text(countryName,style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+            SizedBox(width: 120,),
+            Align(alignment: Alignment.center,child: Image.asset(statusPathList[0]+randomElementList[0].toString()+".png",height: 70,width: 70,),),
+            SizedBox(width: 5  ,),
+            Image.asset('assets/connection/connection_circle.png',width: 30,height: 30  ,)
 
-abstract class IListViewBuilderRow {
-  Widget ListViewBuilderRow(
-      List<TemproryLocation> temproryLocation, int index) {
-    return Container(
-      color: Colors.black,
-      height: 100,
-      width: double.infinity,
-      child: ListTile(
-        leading: temproryLocation[index].locationIcon,
-        title: Text(
-          temproryLocation[index].locationName,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
-          ),
+          ],
         ),
-      ),
+        Divider(
+          height: 2,
+        ),
+      ],
     );
+  }
+
+  List<int> randomNumberAndList(){
+    Random random = new Random();
+    List<int> randomElementList = <int>[];
+    for (var i = 0; i < 6; i++) {
+      int randomNumber = random.nextInt(5);
+      randomElementList.add(randomNumber);
+    }
+    return randomElementList;
+
   }
 }
